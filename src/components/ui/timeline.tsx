@@ -202,11 +202,11 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
   // Content width = start spacer + (all items) + end spacer
   // Start spacer: wallPosition - itemWidth/2
   // Items: data.length * itemWidth + (data.length - 1) * itemGap
-  // End spacer: wallPosition + itemWidth/2
+  // End spacer: contentBoxWidth/2 (just enough to show last item's content box fully)
   const contentWidth = containerWidth > 0
     ? (wallPosition - itemWidth / 2) + // start spacer
       (data.length * itemWidth + Math.max(0, data.length - 1) * itemGap) + // items
-      (wallPosition + itemWidth / 2) // end spacer
+      (contentBoxWidth / 2) // end spacer - reduced for last item
     : 0;
 
   // Measure container width
@@ -248,7 +248,7 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
 
   // Container height for scroll capture - more height for smoother scrolling
   const scrollableHeight = Math.max(
-    contentWidth * 1.5, // 1.5x content width for slower, more controlled scroll
+    contentWidth * 1.2, // 1.2x content width for slower, more controlled scroll
     typeof window !== 'undefined' ? window.innerHeight * 3 : 2400
   );
 
@@ -382,8 +382,8 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
             );
           })}
 
-          {/* End spacer - extra large to ensure last milestone is fully visible */}
-          <div className="shrink-0" style={{ width: `${wallPosition + itemWidth / 2}px` }} />
+          {/* End spacer - just enough to show last item's content box fully */}
+          <div className="shrink-0" style={{ width: `${contentBoxWidth / 2}px` }} />
         </motion.div>
 
         {/* Custom horizontal scrollbar */}
