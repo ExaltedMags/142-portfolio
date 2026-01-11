@@ -1,0 +1,289 @@
+@import "tailwindcss";
+
+/* ========================================
+   Editorial Design Tokens — Kodi Magadia
+   ======================================== */
+
+@theme {
+  /* Typography Scale */
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-body: "Instrument Sans", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+
+  /* Color Palette — Warm Paper & Ink */
+  --color-ink: #1a1814;
+  --color-ink-muted: #4a463f;
+  --color-ink-faint: #7a756d;
+  --color-paper: #f8f6f1;
+  --color-paper-warm: #f3f0e8;
+  --color-paper-dark: #e8e4d9;
+  --color-accent: #c45d3a;
+  --color-accent-hover: #a84a2d;
+  --color-accent-faint: rgba(196, 93, 58, 0.1);
+
+  /* Spacing */
+  --spacing-section: 6rem;
+  --spacing-block: 2.5rem;
+  --spacing-element: 1rem;
+
+  /* Border radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+}
+
+/* ========================================
+   Base Layer — Global Typography & Grain
+   ======================================== */
+
+@layer base {
+  html {
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--color-ink);
+    background-color: var(--color-paper);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    position: relative;
+    min-height: 100vh;
+  }
+
+  /* Subtle grain overlay */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  }
+
+  /* Focus visible state */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Selection */
+  ::selection {
+    background-color: var(--color-accent-faint);
+    color: var(--color-ink);
+  }
+
+  /* Headings */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 5vw + 1rem, 4rem);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 3vw + 0.5rem, 2rem);
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  p {
+    max-width: 65ch;
+  }
+
+  a {
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  a:hover {
+    color: var(--color-accent-hover);
+  }
+
+  /* Code */
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background-color: var(--color-paper-dark);
+    padding: 0.15em 0.35em;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Horizontal rule */
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      var(--color-ink-faint),
+      transparent
+    );
+    margin: var(--spacing-block) 0;
+  }
+}
+
+/* ========================================
+   Component Layer — Reusable Patterns
+   ======================================== */
+
+@layer components {
+  /* Container */
+  .container-editorial {
+    width: 100%;
+    max-width: 72rem;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 5vw, 3rem);
+  }
+
+  /* Section spacing */
+  .section {
+    padding-block: var(--spacing-section);
+  }
+
+  /* Achievement item interaction */
+  .achievement-item {
+    position: relative;
+    display: block;
+    padding: 0.75rem 1rem;
+    margin: -0.75rem -1rem;
+    border-radius: var(--radius-md);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    cursor: pointer;
+  }
+
+  .achievement-item:hover,
+  .achievement-item:focus-visible {
+    background-color: var(--color-paper-dark);
+  }
+
+  .achievement-item:active {
+    transform: scale(0.995);
+  }
+
+  .achievement-item--active {
+    background-color: var(--color-paper-dark);
+    box-shadow: inset 0 0 0 1px rgba(196, 93, 58, 0.35);
+  }
+
+  /* Preview rail */
+  .preview-rail {
+    position: sticky;
+    top: 2rem;
+    min-height: 20rem;
+    background-color: var(--color-paper-warm);
+    border-radius: var(--radius-lg);
+    overflow: visible;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .preview-rail--empty {
+    opacity: 1;
+  }
+
+  /* Staggered fade-in animation */
+  .fade-in-up {
+    opacity: 0;
+    transform: translateY(1.5rem);
+    animation: fadeInUp 0.6s ease forwards;
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Stagger delays */
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.3s; }
+  .delay-4 { animation-delay: 0.4s; }
+  .delay-5 { animation-delay: 0.5s; }
+  .delay-6 { animation-delay: 0.6s; }
+  .delay-7 { animation-delay: 0.7s; }
+  .delay-8 { animation-delay: 0.8s; }
+}
+
+/* ========================================
+   Utility Layer — Helpers
+   ======================================== */
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-body {
+    font-family: var(--font-body);
+  }
+
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+
+  .text-ink {
+    color: var(--color-ink);
+  }
+
+  .text-ink-muted {
+    color: var(--color-ink-muted);
+  }
+
+  .text-ink-faint {
+    color: var(--color-ink-faint);
+  }
+
+  .text-accent {
+    color: var(--color-accent);
+  }
+
+  .bg-paper {
+    background-color: var(--color-paper);
+  }
+
+  .bg-paper-warm {
+    background-color: var(--color-paper-warm);
+  }
+
+  .bg-paper-dark {
+    background-color: var(--color-paper-dark);
+  }
+
+  .bg-accent-faint {
+    background-color: var(--color-accent-faint);
+  }
+}

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" fill="none">
+  <rect width="640" height="480" fill="#e8e4d9"/>
+  <rect x="240" y="180" width="160" height="120" rx="8" fill="#f3f0e8" stroke="#c45d3a" stroke-width="2"/>
+  <text x="320" y="250" font-family="Georgia, serif" font-size="18" fill="#4a463f" text-anchor="middle">Unilab</text>
+</svg>
