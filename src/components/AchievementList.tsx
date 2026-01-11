@@ -15,7 +15,13 @@ interface AchievementListProps {
 }
 
 export function AchievementList({ achievementsToShow = achievements }: AchievementListProps) {
-  const [activeItem, setActiveItem] = useState<Achievement | null>(null)
+  // Initialize with the first achievement to have it hovered by default
+  const [activeItem, setActiveItem] = useState<Achievement | null>(
+    achievementsToShow.length > 0 && 
+    (achievementsToShow[0].interaction === 'previewRail' || achievementsToShow[0].interaction === 'dialog')
+      ? achievementsToShow[0]
+      : null
+  )
   const [dialogItem, setDialogItem] = useState<Achievement | null>(null)
   const [dialogOpen, setDialogOpen] = useState(false)
 

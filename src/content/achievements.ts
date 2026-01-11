@@ -178,6 +178,6 @@ export const narrativeContent = {
 
 // Footer content
 export const footerContent = {
-  currentStatus: 'Currently open to product & data roles post-graduation.',
+  currentStatus: 'you made it to the bottom!',
   email: undefined, // Add email if desired
 }
