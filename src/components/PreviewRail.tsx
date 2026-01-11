@@ -6,6 +6,7 @@ import { Folder } from './Folder'
 import { ImageLightbox } from './ImageLightbox'
 import { LinkPreview } from '@/components/ui/link-preview'
 import { HoverVideoPlayer } from '@/components/ui/hover-video-player'
+import SquigglyArrow from '@/components/ui/squiggle-arrow'
 
 interface PreviewRailProps {
   activeItem: Achievement | null
@@ -87,42 +88,57 @@ export function PreviewRail({ activeItem }: PreviewRailProps) {
                 <SpotifyEmbed url={activeItem.spotifyUrl} />
               </div>
             ) : (
-              <div className={cn(
-                "relative bg-paper-dark rounded-md mb-4 flex items-center justify-center",
-                activeItem.id === 'venue-checker' 
-                  ? "aspect-square" 
-                  : "aspect-[4/3]",
-                activeItem.previewImages && activeItem.previewImages.length > 1 
-                  ? "overflow-visible" 
-                  : "overflow-hidden"
-              )}>
-                {activeItem.previewImages && activeItem.previewImages.length > 1 ? (
-                  <div className="relative z-10">
-                    <Folder
-                      color="#c45d3a"
-                      size={1.5}
-                      items={activeItem.previewImages.map((img, idx) => (
-                        <div
-                          key={idx}
-                          onClick={() => handleImageClick(idx)}
-                          className="w-full h-full cursor-pointer"
-                        >
-                          <img
-                            src={img}
-                            alt={`${activeItem.label} - Image ${idx + 1}`}
-                            loading="lazy"
-                            decoding="async"
-                            className="w-full h-full object-cover"
-                            onError={(e) => {
-                              e.currentTarget.style.display = 'none'
-                            }}
-                          />
-                        </div>
-                      ))}
-                      className="mx-auto"
+              <>
+                {/* Click me! indicator - positioned above the preview container */}
+                {activeItem.previewImages && activeItem.previewImages.length > 1 && (
+                  <div className="flex flex-col items-center gap-0 mb-1 pointer-events-none select-none">
+                    <span className="font-display text-sm text-accent italic whitespace-nowrap">Click me!</span>
+                    <SquigglyArrow 
+                      width={60} 
+                      height={40} 
+                      strokeWidth={2} 
+                      direction="down" 
+                      variant="smooth"
+                      className="text-accent"
                     />
                   </div>
-                ) : activeItem.previewImage ? (
+                )}
+                <div className={cn(
+                  "relative bg-paper-dark rounded-md mb-4 flex items-center justify-center",
+                  activeItem.id === 'venue-checker' 
+                    ? "aspect-square" 
+                    : "aspect-[4/3]",
+                  activeItem.previewImages && activeItem.previewImages.length > 1 
+                    ? "overflow-visible" 
+                    : "overflow-hidden"
+                )}>
+                  {activeItem.previewImages && activeItem.previewImages.length > 1 ? (
+                    <div className="relative z-10">
+                      <Folder
+                        color="#c45d3a"
+                        size={1.5}
+                        items={activeItem.previewImages.map((img, idx) => (
+                          <div
+                            key={idx}
+                            onClick={() => handleImageClick(idx)}
+                            className="w-full h-full cursor-pointer"
+                          >
+                            <img
+                              src={img}
+                              alt={`${activeItem.label} - Image ${idx + 1}`}
+                              loading="lazy"
+                              decoding="async"
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                e.currentTarget.style.display = 'none'
+                              }}
+                            />
+                          </div>
+                        ))}
+                        className="mx-auto"
+                      />
+                    </div>
+                  ) : activeItem.previewImage ? (
                   <img
                     src={activeItem.previewImage}
                     alt={activeItem.label}
@@ -140,25 +156,26 @@ export function PreviewRail({ activeItem }: PreviewRailProps) {
                     }}
                   />
                 ) : null}
-                {/* Placeholder overlay when no image or image fails */}
-                {!activeItem.previewImage && !activeItem.previewImages && (
-                  <div className="absolute inset-0 flex items-center justify-center text-ink-faint pointer-events-none">
-                    <svg
-                      className="w-12 h-12 opacity-30"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                      />
-                    </svg>
-                  </div>
-                )}
-              </div>
+                  {/* Placeholder overlay when no image or image fails */}
+                  {!activeItem.previewImage && !activeItem.previewImages && (
+                    <div className="absolute inset-0 flex items-center justify-center text-ink-faint pointer-events-none">
+                      <svg
+                        className="w-12 h-12 opacity-30"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={1.5}
+                          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        />
+                      </svg>
+                    </div>
+                  )}
+                </div>
+              </>
             )}
 
           {/* Content */}
