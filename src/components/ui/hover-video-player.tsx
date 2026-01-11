@@ -18,7 +18,7 @@ export function HoverVideoPlayer({
   thumbnailSrc,
   className,
   style,
-  muted: initialMuted = true,
+  muted = false,
   loop = true,
   preload = 'metadata',
 }: HoverVideoPlayerProps) {
@@ -31,10 +31,9 @@ export function HoverVideoPlayer({
   const [showThumbnail, setShowThumbnail] = useState(true)
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
-  const [volume, setVolume] = useState(1)
-  const [muted, setMuted] = useState(initialMuted)
+  const [volume, setVolume] = useState(muted ? 0 : 1)
+  const [isMuted, setIsMuted] = useState(muted)
   const [showControls, setShowControls] = useState(false)
-  const [isDragging, setIsDragging] = useState(false)
 
   const handleMouseEnter = useCallback(() => {
     setIsHovering(true)
@@ -43,10 +42,7 @@ export function HoverVideoPlayer({
 
   const handleMouseLeave = useCallback(() => {
     setIsHovering(false)
-    // Keep controls visible briefly, then hide
-    setTimeout(() => {
-      setShowControls(false)
-    }, 300)
+    setShowControls(false)
   }, [])
 
   const playVideo = useCallback(() => {
@@ -88,7 +84,6 @@ export function HoverVideoPlayer({
     setShowThumbnail(true)
   }, [])
 
-  // Toggle play/pause
   const togglePlayPause = useCallback(() => {
     if (!videoRef.current) return
     if (isPlaying) {
@@ -98,73 +93,53 @@ export function HoverVideoPlayer({
     }
   }, [isPlaying, playVideo, pauseVideo])
 
-  // Toggle mute
   const toggleMute = useCallback(() => {
-    setMuted((prev) => !prev)
-  }, [])
-
-  // Handle volume change
-  const handleVolumeChange = useCallback((newVolume: number) => {
-    setVolume(newVolume)
-    if (newVolume > 0) {
-      setMuted(false)
+    if (!videoRef.current) return
+    const newMuted = !isMuted
+    setIsMuted(newMuted)
+    videoRef.current.muted = newMuted
+    if (newMuted) {
+      setVolume(0)
+    } else {
+      setVolume(1)
+      videoRef.current.volume = 1
     }
+  }, [isMuted])
+
+  const handleVolumeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!videoRef.current) return
+    const newVolume = parseFloat(e.target.value)
+    setVolume(newVolume)
+    videoRef.current.volume = newVolume
+    setIsMuted(newVolume === 0)
+    videoRef.current.muted = newVolume === 0
   }, [])
 
-  // Handle progress bar click
   const handleProgressClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (!videoRef.current || !progressBarRef.current) return
-    
+    if (!videoRef.current || !progressBarRef.current || duration === 0) return
     const rect = progressBarRef.current.getBoundingClientRect()
     const clickX = e.clientX - rect.left
     const percentage = clickX / rect.width
     const newTime = percentage * duration
-    
     videoRef.current.currentTime = newTime
     setCurrentTime(newTime)
   }, [duration])
 
-  // Handle progress bar drag
-  const handleProgressMouseDown = useCallback(() => {
-    setIsDragging(true)
+  const formatTime = useCallback((seconds: number) => {
+    if (isNaN(seconds)) return '0:00'
+    const mins = Math.floor(seconds / 60)
+    const secs = Math.floor(seconds % 60)
+    return `${mins}:${secs.toString().padStart(2, '0')}`
   }, [])
-
-  useEffect(() => {
-    if (!isDragging) return
-
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!videoRef.current || !progressBarRef.current) return
-      
-      const rect = progressBarRef.current.getBoundingClientRect()
-      const clickX = e.clientX - rect.left
-      const percentage = Math.max(0, Math.min(1, clickX / rect.width))
-      const newTime = percentage * duration
-      
-      videoRef.current.currentTime = newTime
-      setCurrentTime(newTime)
-    }
-
-    const handleMouseUp = () => {
-      setIsDragging(false)
-    }
-
-    window.addEventListener('mousemove', handleMouseMove)
-    window.addEventListener('mouseup', handleMouseUp)
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove)
-      window.removeEventListener('mouseup', handleMouseUp)
-    }
-  }, [isDragging, duration])
 
   // Handle hover state changes
   useEffect(() => {
-    if (isHovering && !isPlaying && !isDragging) {
+    if (isHovering && !isPlaying) {
       playVideo()
-    } else if (!isHovering && isPlaying && !isDragging) {
+    } else if (!isHovering && isPlaying) {
       pauseVideo()
     }
-  }, [isHovering, isPlaying, isDragging, playVideo, pauseVideo])
+  }, [isHovering, isPlaying, playVideo, pauseVideo])
 
   // Video event handlers
   useEffect(() => {
@@ -188,20 +163,20 @@ export function HoverVideoPlayer({
 
     const handleLoadedData = () => {
       setIsLoading(false)
+      setDuration(video.duration || 0)
     }
 
     const handleTimeUpdate = () => {
-      if (!isDragging) {
-        setCurrentTime(video.currentTime)
-      }
-    }
-
-    const handleLoadedMetadata = () => {
-      setDuration(video.duration)
+      setCurrentTime(video.currentTime)
     }
 
     const handleDurationChange = () => {
-      setDuration(video.duration)
+      setDuration(video.duration || 0)
+    }
+
+    const handleVolumeChange = () => {
+      setVolume(video.volume)
+      setIsMuted(video.muted)
     }
 
     video.addEventListener('playing', handlePlaying)
@@ -209,8 +184,8 @@ export function HoverVideoPlayer({
     video.addEventListener('loadstart', handleLoadStart)
     video.addEventListener('loadeddata', handleLoadedData)
     video.addEventListener('timeupdate', handleTimeUpdate)
-    video.addEventListener('loadedmetadata', handleLoadedMetadata)
     video.addEventListener('durationchange', handleDurationChange)
+    video.addEventListener('volumechange', handleVolumeChange)
 
     // Set video source if not already set
     if (!video.src) {
@@ -224,10 +199,10 @@ export function HoverVideoPlayer({
       video.removeEventListener('loadstart', handleLoadStart)
       video.removeEventListener('loadeddata', handleLoadedData)
       video.removeEventListener('timeupdate', handleTimeUpdate)
-      video.removeEventListener('loadedmetadata', handleLoadedMetadata)
       video.removeEventListener('durationchange', handleDurationChange)
+      video.removeEventListener('volumechange', handleVolumeChange)
     }
-  }, [videoSrc, isDragging])
+  }, [videoSrc])
 
   // Set video properties
   useEffect(() => {
@@ -235,21 +210,10 @@ export function HoverVideoPlayer({
     if (!video) return
 
     video.muted = muted
-    video.volume = volume
     video.loop = loop
     video.preload = preload
     video.playsInline = true
-  }, [muted, volume, loop, preload])
-
-  // Format time helper
-  const formatTime = (seconds: number): string => {
-    if (isNaN(seconds)) return '0:00'
-    const mins = Math.floor(seconds / 60)
-    const secs = Math.floor(seconds % 60)
-    return `${mins}:${secs.toString().padStart(2, '0')}`
-  }
-
-  const progressPercentage = duration > 0 ? (currentTime / duration) * 100 : 0
+  }, [muted, loop, preload])
 
   return (
     <motion.div
@@ -297,85 +261,82 @@ export function HoverVideoPlayer({
         </motion.div>
       )}
 
-      {/* Video Controls */}
+      {/* Video Controls Overlay */}
       <AnimatePresence>
         {showControls && (
           <motion.div
-            className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
+            className="absolute inset-0 flex flex-col justify-end pointer-events-none"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            onMouseEnter={() => setShowControls(true)}
-            onMouseLeave={() => {
-              if (!isHovering) {
-                setTimeout(() => setShowControls(false), 300)
-              }
-            }}
           >
-            {/* Progress Bar */}
-            <div
-              ref={progressBarRef}
-              className="relative h-1.5 bg-white/20 rounded-full mb-3 cursor-pointer group"
-              onClick={handleProgressClick}
-              onMouseDown={handleProgressMouseDown}
-            >
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
+            
+            {/* Controls */}
+            <div className="relative z-10 p-2 sm:p-3 pointer-events-auto">
+              {/* Progress bar */}
               <div
-                className="absolute left-0 top-0 h-full bg-accent rounded-full transition-all"
-                style={{ width: `${progressPercentage}%` }}
-              />
-              <div
-                className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-accent rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                style={{ left: `calc(${progressPercentage}% - 6px)` }}
-              />
-            </div>
+                ref={progressBarRef}
+                className="relative h-1 bg-white/20 rounded-full mb-2 cursor-pointer group"
+                onClick={handleProgressClick}
+              >
+                <div
+                  className="absolute left-0 top-0 h-full bg-accent rounded-full transition-all"
+                  style={{ width: `${duration > 0 ? (currentTime / duration) * 100 : 0}%` }}
+                />
+                <div
+                  className="absolute top-1/2 -translate-y-1/2 h-3 w-3 bg-accent rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                  style={{ left: `calc(${duration > 0 ? (currentTime / duration) * 100 : 0}% - 6px)` }}
+                />
+              </div>
 
-            {/* Controls Row */}
-            <div className="flex items-center justify-between gap-4">
-              {/* Left: Play/Pause and Time */}
-              <div className="flex items-center gap-3">
+              {/* Bottom controls bar */}
+              <div className="flex items-center gap-2">
+                {/* Play/Pause button */}
                 <button
                   onClick={togglePlayPause}
-                  className="p-1.5 rounded-full hover:bg-white/20 transition-colors"
+                  className="p-1.5 rounded-full bg-black/40 hover:bg-black/60 transition-colors shrink-0"
                   aria-label={isPlaying ? 'Pause' : 'Play'}
                 >
                   {isPlaying ? (
-                    <Pause className="w-4 h-4 text-white" />
+                    <Pause className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" />
                   ) : (
-                    <Play className="w-4 h-4 text-white" />
+                    <Play className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" />
                   )}
                 </button>
-                <span className="text-xs text-white/80 font-mono">
-                  {formatTime(currentTime)} / {formatTime(duration)}
-                </span>
-              </div>
 
-              {/* Right: Volume Control */}
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={toggleMute}
-                  className="p-1.5 rounded-full hover:bg-white/20 transition-colors"
-                  aria-label={muted ? 'Unmute' : 'Mute'}
-                >
-                  {muted || volume === 0 ? (
-                    <VolumeX className="w-4 h-4 text-white" />
-                  ) : (
-                    <Volume2 className="w-4 h-4 text-white" />
-                  )}
-                </button>
-                <div className="flex items-center gap-2 w-24">
+                {/* Volume control */}
+                <div className="flex items-center gap-1.5 flex-1 min-w-0">
+                  <button
+                    onClick={toggleMute}
+                    className="p-1.5 rounded-full bg-black/40 hover:bg-black/60 transition-colors shrink-0"
+                    aria-label={isMuted ? 'Unmute' : 'Mute'}
+                  >
+                    {isMuted || volume === 0 ? (
+                      <VolumeX className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" />
+                    ) : (
+                      <Volume2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" />
+                    )}
+                  </button>
                   <input
                     type="range"
                     min="0"
                     max="1"
                     step="0.01"
-                    value={muted ? 0 : volume}
-                    onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
-                    className="w-full h-1 bg-white/20 rounded-full appearance-none cursor-pointer accent-accent"
+                    value={isMuted ? 0 : volume}
+                    onChange={handleVolumeChange}
+                    className="flex-1 h-1 bg-white/20 rounded-full appearance-none cursor-pointer accent-accent"
                     style={{
-                      background: `linear-gradient(to right, rgb(196, 93, 58) 0%, rgb(196, 93, 58) ${(muted ? 0 : volume) * 100}%, rgba(255, 255, 255, 0.2) ${(muted ? 0 : volume) * 100}%, rgba(255, 255, 255, 0.2) 100%)`,
+                      background: `linear-gradient(to right, rgb(196, 93, 58) 0%, rgb(196, 93, 58) ${(isMuted ? 0 : volume) * 100}%, rgba(255, 255, 255, 0.2) ${(isMuted ? 0 : volume) * 100}%, rgba(255, 255, 255, 0.2) 100%)`
                     }}
                   />
+                </div>
+
+                {/* Time display */}
+                <div className="text-white text-xs sm:text-sm font-mono shrink-0 px-1.5">
+                  {formatTime(currentTime)} / {formatTime(duration)}
                 </div>
               </div>
             </div>

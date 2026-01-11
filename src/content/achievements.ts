@@ -33,7 +33,7 @@ export const achievements: Achievement[] = [
     label: 'Corporate Digital Transformation Intern, Unilab Inc.',
     kind: 'major',
     interaction: 'previewRail',
-    previewImage: '/assets/unilab.svg',
+    previewImage: '/assets/unilab.jpg',
     detailCopy:
       'Analyzed e-commerce data for flagship consumer health brands. Prototyped a rural health-tech app — a doctor on the review panel called it "his dream."',
     link: undefined,
@@ -80,11 +80,10 @@ export const achievements: Achievement[] = [
   },
   {
     id: 'alaga-network',
-    label: 'Built early-stage health & campus tools (quietly shipped)',
+    label: 'AlagaNetwork — rural health-tech prototype',
     kind: 'major',
     interaction: 'dialog',
-    previewImage: '/assets/alaga-network.svg', // Fallback for single image view
-    previewImages: ['/assets/alaga-network.svg', '/assets/alaga-network.svg', '/assets/alaga-network.svg'], // Multiple images for Folder
+    previewImage: '/assets/alaga-network.svg',
     detailCopy:
       'AlagaNetwork — a rural health-tech platform connecting barangay health workers with real-time data. Currently in pilot conversations with municipal health offices.',
     link: undefined,
@@ -104,10 +103,11 @@ export const achievements: Achievement[] = [
   {
     id: 'pc-builder',
     label: 'PC enthusiast',
-    kind: 'minor',
-    interaction: 'tooltip',
-    tooltipText:
-      'Assembled custom rigs for gaming and productivity. Obsessed with cable management.',
+    kind: 'major',
+    interaction: 'previewRail',
+    previewImage: '/assets/ltt.jpg',
+    detailCopy:
+      'Thank you, Linus Tech Tips, for the inspiration, and for kicking off my MIS journey.',
   },
   {
     id: 'vainglory',
@@ -127,6 +127,15 @@ export const achievements: Achievement[] = [
     videoUrl: '/assets/music/guitar-playing.mov',
     videoThumbnail: '/assets/music/guitar-thumbnail.png',
     spotifyUrl: 'https://open.spotify.com/track/4vaNwLCX5wiN5aFDZuTnXi?si=a416d58d97a24404',
+  },
+  {
+    id: 'songwriting-contest',
+    label: '2nd place, college songwriting contest',
+    kind: 'major',
+    interaction: 'previewRail',
+    detailCopy:
+      'Won 2nd place composing, playing instruments, and writing lyrics for a SHS music contest.',
+    spotifyUrl: 'https://open.spotify.com/track/4vaNwLCX5wiN5aFDZuTnXi?si=a9be8ff4ee1947ac',
   },
   {
     id: 'coffee',
@@ -161,7 +170,7 @@ export const achievements: Achievement[] = [
 
 // Narrative content (verbatim from brief)
 export const narrativeContent = {
-  whatIDo: `I design and test products across layers—hardware constraints, data, software, and human behavior.`,
+  whatIDo: `I work on products by thinking through constraints; technical, hardware, data-related, and human.`,
 
   unilab: `At Unilab, I analyzed e-commerce data for flagship consumer health brands and prototyped a rural health-tech app. A doctor on the review panel called it "his dream." I plan to return to this after graduation—starting with Unilab.`,
 

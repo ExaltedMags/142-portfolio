@@ -3,6 +3,7 @@ import { achievements, Achievement } from '@/content/achievements'
 import { AchievementItem } from './AchievementItem'
 import { PreviewRail } from './PreviewRail'
 import { TooltipProvider } from '@/components/ui/tooltip'
+import { cn } from '@/lib/utils'
 
 // Lazy load the dialog for code splitting
 const ArtifactDialog = lazy(() =>
@@ -45,7 +46,12 @@ export function AchievementList({ achievementsToShow = achievements }: Achieveme
           </h2>
 
           {/* Responsive layout: stacked on mobile, two-column on desktop */}
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_320px] gap-8 md:gap-12 lg:gap-16">
+          <div className={cn(
+            "grid grid-cols-1 gap-8 md:gap-12 lg:gap-16",
+            activeItem?.id === 'songwriting-contest'
+              ? "md:grid-cols-[1fr_520px]"
+              : "md:grid-cols-[1fr_420px]"
+          )}>
             {/* Left: Achievement list */}
             <div>
               <ul className="space-y-1" role="list">

@@ -9,7 +9,7 @@ import { achievements } from '@/content/achievements'
 
 export function AchievementsWithTabs() {
   // Filter achievements: serious vs not-so-serious
-  const notSeriousIds = ['pc-builder', 'vainglory', 'musician', 'coffee']
+  const notSeriousIds = ['pc-builder', 'vainglory', 'musician', 'songwriting-contest', 'coffee']
   const seriousAchievements = achievements.filter(
     (item) => !notSeriousIds.includes(item.id)
   )

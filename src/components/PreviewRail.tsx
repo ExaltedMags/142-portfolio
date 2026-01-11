@@ -73,11 +73,11 @@ export function PreviewRail({ activeItem }: PreviewRailProps) {
           <div className="h-full flex flex-col" key={activeItem.id}>
             {/* Video, Spotify embed, or Image display: Folder for multiple images, single image otherwise */}
             {activeItem.videoUrl ? (
-              <div className="relative w-full aspect-video bg-paper-dark rounded-md mb-4 overflow-hidden">
+              <div className="relative w-full aspect-[16/10] bg-paper-dark rounded-md mb-4 overflow-hidden">
                 <HoverVideoPlayer
                   videoSrc={activeItem.videoUrl}
                   thumbnailSrc={activeItem.videoThumbnail}
-                  muted={true}
+                  muted={false}
                   loop={true}
                   className="w-full h-full"
                 />
