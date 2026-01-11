@@ -37,15 +37,11 @@ export function Narrative() {
               </span>
             </Tooltip>
             {' '}(rural health-tech), a{' '}
-            <LinkPreview url="https://admu-vac.onrender.com" className="inline-block">
-              <a
-                href="https://admu-vac.onrender.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-accent cursor-pointer underline decoration-accent/30 underline-offset-2 hover:decoration-accent/60 transition-colors"
-              >
-                venue availability checker
-              </a>
+            <LinkPreview 
+              url="https://admu-vac.onrender.com" 
+              className="inline-block text-accent cursor-pointer underline decoration-accent/30 underline-offset-2 hover:decoration-accent/60 transition-colors"
+            >
+              venue availability checker
             </LinkPreview>
             , and a{' '}
             <Tooltip 

@@ -178,16 +178,9 @@ export function PreviewRail({ activeItem }: PreviewRailProps) {
                         {beforeSomnium}
                         <LinkPreview
                           url={activeItem.link}
-                          className="inline-block"
+                          className="inline-block text-accent cursor-pointer underline decoration-accent/30 underline-offset-2 hover:decoration-accent/60 transition-colors font-medium"
                         >
-                          <a
-                            href={activeItem.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-accent cursor-pointer underline decoration-accent/30 underline-offset-2 hover:decoration-accent/60 transition-colors font-medium"
-                          >
-                            {somniumText}
-                          </a>
+                          {somniumText}
                         </LinkPreview>
                         {afterSomnium}
                       </>
@@ -218,17 +211,12 @@ export function PreviewRail({ activeItem }: PreviewRailProps) {
             {activeItem.link && (
               <LinkPreview
                 url={activeItem.link}
-                className="inline-block"
+                className="inline-flex items-center gap-1.5 mt-4 text-sm font-medium text-accent hover:text-accent-hover transition-colors"
               >
-                <a
-                  href={activeItem.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 mt-4 text-sm font-medium text-accent hover:text-accent-hover transition-colors"
-                >
+                <>
                   {activeItem.linkLabel || 'Learn more'}
                   <ExternalLink className="w-3.5 h-3.5" />
-                </a>
+                </>
               </LinkPreview>
             )}
           </div>

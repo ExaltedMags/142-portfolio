@@ -130,7 +130,7 @@ export const achievements: Achievement[] = [
   },
   {
     id: 'songwriting-contest',
-    label: '2nd place, college songwriting contest',
+    label: '2nd place, high school songwriting contest',
     kind: 'major',
     interaction: 'previewRail',
     detailCopy:
