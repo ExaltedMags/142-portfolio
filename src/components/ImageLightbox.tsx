@@ -1,7 +1,6 @@
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { X } from 'lucide-react'
 import { useState, useEffect } from 'react'
-import { cn } from '@/lib/utils'
 
 interface ImageLightboxProps {
   images: string[]

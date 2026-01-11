@@ -31,8 +31,8 @@ export const LinkPreview = ({
   className,
   width = 200,
   height = 125,
-  quality = 50,
-  layout = "fixed",
+  quality: _quality = 50,
+  layout: _layout = "fixed",
   isStatic = false,
   imageSrc = "",
 }: LinkPreviewProps) => {
@@ -48,6 +48,7 @@ export const LinkPreview = ({
       "viewport.deviceScaleFactor": 1,
       "viewport.width": width * 3,
       "viewport.height": height * 3,
+      quality: _quality,
     });
     src = `https://api.microlink.io/?${params}`;
   } else {

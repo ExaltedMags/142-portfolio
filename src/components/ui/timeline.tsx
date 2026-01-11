@@ -182,7 +182,6 @@ function ScrollbarTrack({
 export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const [contentWidth, setContentWidth] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
 
   // Content box has max-w-2xl (672px), so use that as the visual "box" width
@@ -196,12 +195,25 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
   // The visual content box width (for threshold calculation)
   const contentBoxWidth = Math.min(itemWidth, contentBoxMaxWidth);
 
-  // Measure timeline width
+  const wallPosition = containerWidth / 2;
+  
+  // Calculate content width mathematically instead of relying on DOM measurement
+  // This ensures correct scrolling even on larger screens and production builds
+  // Content width = start spacer + (all items) + end spacer
+  // Start spacer: wallPosition - itemWidth/2
+  // Items: data.length * itemWidth + (data.length - 1) * itemGap
+  // End spacer: wallPosition + itemWidth/2
+  const contentWidth = containerWidth > 0
+    ? (wallPosition - itemWidth / 2) + // start spacer
+      (data.length * itemWidth + Math.max(0, data.length - 1) * itemGap) + // items
+      (wallPosition + itemWidth / 2) // end spacer
+    : 0;
+
+  // Measure container width
   useEffect(() => {
     const updateDimensions = () => {
-      if (containerRef.current && contentRef.current) {
+      if (containerRef.current) {
         setContainerWidth(containerRef.current.offsetWidth);
-        setContentWidth(contentRef.current.scrollWidth);
       }
     };
 
@@ -240,7 +252,6 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
     typeof window !== 'undefined' ? window.innerHeight * 3 : 2400
   );
 
-  const wallPosition = containerWidth / 2;
   const lineTopPosition = 160;
   const dotTopPosition = lineTopPosition - dotOuterSize / 2;
 

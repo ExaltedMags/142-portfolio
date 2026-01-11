@@ -176,6 +176,9 @@ const DirectionAwareTabsContent = React.forwardRef<
   const { value: selectedValue, direction } = useDirectionAwareTabs()
   const isSelected = selectedValue === value
 
+  // Exclude onDrag from props to avoid conflict with Framer Motion
+  const { onDrag, ...motionProps } = props as any
+
   return (
     <AnimatePresence mode="wait" initial={false}>
       {isSelected && (
@@ -201,7 +204,7 @@ const DirectionAwareTabsContent = React.forwardRef<
             stiffness: 300,
             damping: 30,
           }}
-          {...props}
+          {...motionProps}
         >
           {children}
         </motion.div>
