@@ -9,7 +9,11 @@ const ArtifactDialog = lazy(() =>
   import('./ArtifactDialog').then((m) => ({ default: m.ArtifactDialog }))
 )
 
-export function AchievementList() {
+interface AchievementListProps {
+  achievementsToShow?: Achievement[]
+}
+
+export function AchievementList({ achievementsToShow = achievements }: AchievementListProps) {
   const [activeItem, setActiveItem] = useState<Achievement | null>(null)
   const [dialogItem, setDialogItem] = useState<Achievement | null>(null)
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -45,7 +49,7 @@ export function AchievementList() {
             {/* Left: Achievement list */}
             <div>
               <ul className="space-y-1" role="list">
-                {achievements.map((item, index) => (
+                {achievementsToShow.map((item, index) => (
                   <AchievementItem
                     key={item.id}
                     item={item}

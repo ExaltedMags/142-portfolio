@@ -13,6 +13,9 @@ export interface Achievement {
   tooltipText?: string
   link?: string
   linkLabel?: string
+  spotifyUrl?: string
+  videoUrl?: string
+  videoThumbnail?: string
 }
 
 // Header content (verbatim from brief)
@@ -43,12 +46,21 @@ export const achievements: Achievement[] = [
     interaction: 'dialog',
     previewImage: '/assets/gdsc.svg', // Fallback for single image view
     previewImages: [
-      '/assets/gdsc.svg',
-      '/assets/gdsc.svg',
-      '/assets/gdsc.svg',
+      '/assets/gdsc/gdsc-1.jpg',
+      '/assets/gdsc/gdsc-2.jpg',
+      '/assets/gdsc/gdsc-3.jpg',
     ], // Multiple images for Folder
     detailCopy:
       'Orchestrated operations for one of the largest tech communities on campus. Coordinated workshops, hackathons, and speaker events.',
+  },
+  {
+    id: 'intact-facilitator',
+    label: 'InTACT Student Facilitator',
+    kind: 'major',
+    interaction: 'previewRail',
+    previewImage: '/assets/intact.png',
+    detailCopy:
+      'Guided freshmen through their first year, providing mentorship and support during their transition to university life.',
   },
   {
     id: 'somnium',
@@ -63,6 +75,8 @@ export const achievements: Achievement[] = [
     ], // Multiple images for Folder
     detailCopy:
       'Directed the logistics and tech infrastructure for SOMNIUM, a benefit concert that raised ₱650,000 for charity. Managed vendor coordination, ticketing systems, and on-ground operations for over 2,000 attendees.',
+    link: 'https://www.facebook.com/somnium2020/',
+    linkLabel: 'Visit Facebook page',
   },
   {
     id: 'alaga-network',
@@ -78,14 +92,14 @@ export const achievements: Achievement[] = [
   },
   {
     id: 'venue-checker',
-    label: 'College venue availability checker (releasing soon)',
+    label: 'ADMU venue availability checker',
     kind: 'major',
     interaction: 'dialog',
     previewImage: '/assets/venue-checker.svg',
     detailCopy:
       'A lightweight tool that scrapes and displays real-time availability of campus venues. Releasing soon — this class hears it first.',
-    link: undefined,
-    linkLabel: 'Coming soon',
+    link: 'https://admu-vac.onrender.com',
+    linkLabel: 'Visit site',
   },
   {
     id: 'pc-builder',
@@ -102,6 +116,31 @@ export const achievements: Achievement[] = [
     interaction: 'tooltip',
     tooltipText:
       'Former ranked player. Learned macro strategy, team coordination, and tilt management.',
+  },
+  {
+    id: 'musician',
+    label: 'A bit of an amateur musician; guitarist and drummer',
+    kind: 'major',
+    interaction: 'previewRail',
+    tooltipText:
+      'Playing music as a hobby. Mostly rock and indie covers.',
+    videoUrl: '/assets/music/guitar-playing.mov',
+    videoThumbnail: '/assets/music/guitar-thumbnail.png',
+    spotifyUrl: 'https://open.spotify.com/track/4vaNwLCX5wiN5aFDZuTnXi?si=a416d58d97a24404',
+  },
+  {
+    id: 'coffee',
+    label: 'Coffee connoisseur',
+    kind: 'major',
+    interaction: 'dialog',
+    previewImage: '/assets/coffee/coffee-1.jpg', // Fallback for single image view
+    previewImages: [
+      '/assets/coffee/coffee-1.jpg',
+      '/assets/coffee/coffee-2.jpg',
+      '/assets/coffee/coffee-3.jpg',
+    ], // Multiple images for Folder
+    detailCopy:
+      'Always on the hunt for the perfect cup. Prefers pour-over and espresso.',
   },
   {
     id: 'deans-lister',

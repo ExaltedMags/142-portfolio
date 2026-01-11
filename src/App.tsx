@@ -1,5 +1,5 @@
 import { Header } from '@/components/Header'
-import { AchievementList } from '@/components/AchievementList'
+import { AchievementsWithTabs } from '@/components/AchievementsWithTabs'
 import { Narrative } from '@/components/Narrative'
 import { Footer } from '@/components/Footer'
 
@@ -9,7 +9,7 @@ function App() {
       <Header />
 
       <main>
-        <AchievementList />
+        <AchievementsWithTabs />
         <Narrative />
       </main>
 

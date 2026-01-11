@@ -1,5 +1,7 @@
 import { narrativeContent } from '@/content/achievements'
 import { Tooltip } from '@/components/ui/tooltip-card'
+import { LinkPreview } from '@/components/ui/link-preview'
+import { Timeline } from '@/components/ui/timeline'
 
 export function Narrative() {
   return (
@@ -35,11 +37,16 @@ export function Narrative() {
               </span>
             </Tooltip>
             {' '}(rural health-tech), a{' '}
-            <Tooltip content="A lightweight tool that scrapes and displays real-time availability of campus venues. Releasing soon — this class hears it first.">
-              <span className="text-accent cursor-help underline decoration-accent/30 underline-offset-2 hover:decoration-accent/60 transition-colors">
+            <LinkPreview url="https://admu-vac.onrender.com" className="inline-block">
+              <a
+                href="https://admu-vac.onrender.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent cursor-pointer underline decoration-accent/30 underline-offset-2 hover:decoration-accent/60 transition-colors"
+              >
                 college venue availability checker
-              </span>
-            </Tooltip>
+              </a>
+            </LinkPreview>
             {' '}(releasing soon — this class hears it first).
           </p>
 
@@ -75,26 +82,59 @@ export function Narrative() {
             </Tooltip>
             . Ship early → learn → refine.
           </p>
-
-          {/* Trajectory */}
-          <div className="pt-4 border-t border-ink/10 fade-in-up delay-4">
-            <p className="text-sm text-ink-muted leading-relaxed font-mono">
-              Trajectory: 10 yrs → Product architect solving{' '}
-              <Tooltip content="The final step in data delivery — getting information to end users in remote or underserved areas where infrastructure is limited.">
-                <span className="text-accent cursor-help underline decoration-accent/30 underline-offset-2 hover:decoration-accent/60 transition-colors">
-                  last-mile data & access problems
-                </span>
-              </Tooltip>
-              . 15 yrs → Founder/CTO of a rural tech startup. 20+ yrs →{' '}
-              <Tooltip content="Early-stage investor and advisor on technology policy, especially around rural connectivity and health data infrastructure.">
-                <span className="text-accent cursor-help underline decoration-accent/30 underline-offset-2 hover:decoration-accent/60 transition-colors">
-                  Angel & policy advisor
-                </span>
-              </Tooltip>
-              .
-            </p>
-          </div>
         </div>
+      </div>
+
+      {/* Trajectory Timeline - Full Width */}
+      <div className="w-screen relative -ml-[calc((100vw-100%)/2)] -mr-[calc((100vw-100%)/2)] mt-12 pt-8 border-t border-ink/10 fade-in-up delay-4">
+        <Timeline
+          data={[
+            {
+              title: '10 yrs',
+              content: (
+                <div className="text-base md:text-lg text-ink-muted leading-relaxed">
+                  <p className="font-mono mb-4 text-lg md:text-xl text-ink font-semibold">Product architect</p>
+                  <p className="text-sm md:text-base text-ink-faint leading-relaxed">
+                    Solving{' '}
+                    <Tooltip content="The final step in data delivery — getting information to end users in remote or underserved areas where infrastructure is limited.">
+                      <span className="text-accent cursor-help underline decoration-accent/30 underline-offset-2 hover:decoration-accent/60 transition-colors">
+                        last-mile data & access problems
+                      </span>
+                    </Tooltip>
+                    .
+                  </p>
+                </div>
+              ),
+            },
+            {
+              title: '15 yrs',
+              content: (
+                <div className="text-base md:text-lg text-ink-muted leading-relaxed">
+                  <p className="font-mono mb-4 text-lg md:text-xl text-ink font-semibold">Founder/CTO</p>
+                  <p className="text-sm md:text-base text-ink-faint leading-relaxed">
+                    Leading a rural tech startup focused on bridging digital divides and improving access to essential services.
+                  </p>
+                </div>
+              ),
+            },
+            {
+              title: '20+ yrs',
+              content: (
+                <div className="text-base md:text-lg text-ink-muted leading-relaxed">
+                  <p className="font-mono mb-4 text-lg md:text-xl text-ink font-semibold">Angel & policy advisor</p>
+                  <p className="text-sm md:text-base text-ink-faint leading-relaxed">
+                    <Tooltip content="Early-stage investor and advisor on technology policy, especially around rural connectivity and health data infrastructure.">
+                      <span className="text-accent cursor-help underline decoration-accent/30 underline-offset-2 hover:decoration-accent/60 transition-colors">
+                        Investing and advising
+                      </span>
+                    </Tooltip>
+                    {' '}on technology policy, especially around rural connectivity and health data infrastructure.
+                  </p>
+                </div>
+              ),
+            },
+          ]}
+        />
       </div>
     </section>
   )
