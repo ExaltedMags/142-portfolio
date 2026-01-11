@@ -25,13 +25,13 @@ export function Narrative() {
                 rural health-tech app
               </span>
             </Tooltip>
-            {' '}— a doctor on the review panel called it "his dream." I plan to return to this after graduation—starting with Unilab.
+            {' '}— a doctor on the panel called it "his dream." I plan to return to this after graduation—starting with Unilab.
           </p>
 
           {/* Tools */}
           <p className="text-ink-muted leading-relaxed fade-in-up delay-2">
             Outside work, I build small, practical tools to remove everyday friction:{' '}
-            <Tooltip content="A platform connecting barangay health workers with real-time data. Currently in pilot conversations with municipal health offices.">
+            <Tooltip content="A platform connecting barangay health workers in Geographically Isolated and Disadvantaged Areas (GIDAs) with real-time data.">
               <span className="text-accent cursor-help underline decoration-accent/30 underline-offset-2 hover:decoration-accent/60 transition-colors">
                 AlagaNetwork
               </span>
@@ -44,49 +44,76 @@ export function Narrative() {
                 rel="noopener noreferrer"
                 className="text-accent cursor-pointer underline decoration-accent/30 underline-offset-2 hover:decoration-accent/60 transition-colors"
               >
-                college venue availability checker
+                venue availability checker
               </a>
             </LinkPreview>
-            {' '}(releasing soon — this class hears it first).
+            , and a{' '}
+            <Tooltip 
+              content={
+                <div>
+                  <img 
+                    src="/assets/video-capture-t0021.21seg-9382.png" 
+                    alt="TNVS price comparison platform"
+                    className="w-full rounded-sm mb-2"
+                  />
+                  <p className="text-sm">A platform for comparing prices across different Transportation Network Vehicle Services (TNVS) to help users find the best rates.</p>
+                </div>
+              }
+            >
+              <span className="text-accent cursor-help underline decoration-accent/30 underline-offset-2 hover:decoration-accent/60 transition-colors">
+                TNVS price comparison platform
+              </span>
+            </Tooltip>
+            .
           </p>
 
           {/* How I Operate */}
-          <p className="text-ink font-medium fade-in-up delay-3">
-            How I operate:{' '}
-            <Tooltip 
-              content={
-                <img 
-                  src="/assets/radical-candor-fully-revised-updated-edition.jpg" 
-                  alt="Radical Candor book cover"
-                  className="max-w-[200px] rounded-sm"
-                />
-              }
-            >
-              <span className="text-accent cursor-help underline decoration-accent/30 underline-offset-2 hover:decoration-accent/60 transition-colors">
-                Radical candor
-              </span>
-            </Tooltip>
-            .{' '}
-            <Tooltip 
-              content={
-                <img 
-                  src="/assets/slowprod.jpg" 
-                  alt="Slow Productivity book cover"
-                  className="max-w-[200px] rounded-sm"
-                />
-              }
-            >
-              <span className="text-accent cursor-help underline decoration-accent/30 underline-offset-2 hover:decoration-accent/60 transition-colors">
-                Slow productivity
-              </span>
-            </Tooltip>
-            . Ship early → learn → refine.
-          </p>
+          <div className="fade-in-up delay-3">
+            <h3 className="text-ink font-medium mb-3">How I operate:</h3>
+            <ul className="list-disc list-inside space-y-2 text-ink font-medium">
+              <li>
+                <Tooltip 
+                  content={
+                    <img 
+                      src="/assets/radical-candor-fully-revised-updated-edition.jpg" 
+                      alt="Radical Candor book cover"
+                      className="max-w-[200px] rounded-sm"
+                    />
+                  }
+                >
+                  <span className="text-accent cursor-help underline decoration-accent/30 underline-offset-2 hover:decoration-accent/60 transition-colors">
+                    Radical candor
+                  </span>
+                </Tooltip>
+              </li>
+              <li>
+                <Tooltip 
+                  content={
+                    <img 
+                      src="/assets/slowprod.jpg" 
+                      alt="Slow Productivity book cover"
+                      className="max-w-[200px] rounded-sm"
+                    />
+                  }
+                >
+                  <span className="text-accent cursor-help underline decoration-accent/30 underline-offset-2 hover:decoration-accent/60 transition-colors">
+                    Slow productivity
+                  </span>
+                </Tooltip>
+              </li>
+              <li>Ship early → fail fast → learn → refine.</li>
+            </ul>
+          </div>
         </div>
       </div>
 
       {/* Trajectory Timeline - Full Width */}
       <div className="w-screen relative -ml-[calc((100vw-100%)/2)] -mr-[calc((100vw-100%)/2)] mt-12 pt-8 border-t border-ink/10 fade-in-up delay-4">
+        <div className="w-full flex justify-center mb-4 md:mb-6">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-ink text-center">
+            Where I want to be in x years
+          </h2>
+        </div>
         <Timeline
           data={[
             {

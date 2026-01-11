@@ -88,7 +88,10 @@ export function PreviewRail({ activeItem }: PreviewRailProps) {
               </div>
             ) : (
               <div className={cn(
-                "relative aspect-[4/3] bg-paper-dark rounded-md mb-4 flex items-center justify-center",
+                "relative bg-paper-dark rounded-md mb-4 flex items-center justify-center",
+                activeItem.id === 'venue-checker' 
+                  ? "aspect-square" 
+                  : "aspect-[4/3]",
                 activeItem.previewImages && activeItem.previewImages.length > 1 
                   ? "overflow-visible" 
                   : "overflow-hidden"
@@ -125,7 +128,12 @@ export function PreviewRail({ activeItem }: PreviewRailProps) {
                     alt={activeItem.label}
                     loading="lazy"
                     decoding="async"
-                    className="w-full h-full object-cover cursor-pointer"
+                    className={cn(
+                      "w-full h-full cursor-pointer",
+                      activeItem.id === 'venue-checker' 
+                        ? "object-contain" 
+                        : "object-cover"
+                    )}
                     onClick={handleSingleImageClick}
                     onError={(e) => {
                       e.currentTarget.style.display = 'none'

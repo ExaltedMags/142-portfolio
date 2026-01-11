@@ -47,10 +47,13 @@ export function ArtifactDialog({ item, open, onOpenChange }: ArtifactDialogProps
           {/* Image display: Folder for multiple images, single image otherwise */}
           {(item.previewImage || item.previewImages) && (
             <div className={cn(
-              "relative aspect-video bg-paper-dark rounded-md mb-6 -mt-2 flex items-center justify-center",
+              "relative bg-paper-dark rounded-md mb-6 -mt-2 flex items-center justify-center",
               item.previewImages && item.previewImages.length > 1 
                 ? "overflow-visible" 
-                : "overflow-hidden"
+                : "overflow-hidden",
+              item.id === 'coffee' 
+                ? "aspect-[3/4]" 
+                : "aspect-video"
             )}>
               {item.previewImages && item.previewImages.length > 1 ? (
                 <div className="relative z-10">
@@ -84,7 +87,10 @@ export function ArtifactDialog({ item, open, onOpenChange }: ArtifactDialogProps
                   alt={item.label}
                   loading="lazy"
                   decoding="async"
-                  className="w-full h-full object-cover cursor-pointer"
+                  className={cn(
+                    "w-full h-full cursor-pointer",
+                    item.id === 'coffee' ? "object-contain" : "object-cover"
+                  )}
                   onClick={handleSingleImageClick}
                   onError={(e) => {
                     e.currentTarget.style.display = 'none'

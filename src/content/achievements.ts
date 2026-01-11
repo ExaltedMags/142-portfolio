@@ -23,7 +23,7 @@ export const headerContent = {
   name: 'Kodi Magadia',
   program: 'BS Management Information Systems',
   specialization: 'Data Science & Analytics | 4th year',
-  tagline: 'Aspiring Product Architect. Digital bridge-builder.',
+  tagline: 'Aspiring Product Engineer. Digital bridge-builder.',
 }
 
 // Achievement items
@@ -41,7 +41,7 @@ export const achievements: Achievement[] = [
   },
   {
     id: 'gdsc',
-    label: 'COO, Google Developer Student Clubs (ADMU)',
+    label: 'COO, Google Developer Student Clubs - Loyola',
     kind: 'major',
     interaction: 'dialog',
     previewImage: '/assets/gdsc.svg', // Fallback for single image view
@@ -80,12 +80,12 @@ export const achievements: Achievement[] = [
   },
   {
     id: 'alaga-network',
-    label: 'AlagaNetwork — rural health-tech prototype',
+    label: 'AlagaNetwork',
     kind: 'major',
     interaction: 'dialog',
     previewImage: '/assets/alaga-network.svg',
     detailCopy:
-      'AlagaNetwork — a rural health-tech platform connecting barangay health workers with real-time data. Currently in pilot conversations with municipal health offices.',
+      'A rural health-tech platform connecting barangay health workers in Geographically Isolated and Disadvantaged Areas (GIDAs) with real-time data.',
     link: undefined,
     linkLabel: 'Learn more',
   },
@@ -94,9 +94,9 @@ export const achievements: Achievement[] = [
     label: 'ADMU venue availability checker',
     kind: 'major',
     interaction: 'dialog',
-    previewImage: '/assets/venue-checker.svg',
+    previewImage: '/assets/venue-qr.png',
     detailCopy:
-      'A lightweight tool that scrapes and displays real-time availability of campus venues. Releasing soon — this class hears it first.',
+      'A lightweight tool that scrapes and displays real-time availability of campus venues. Coming soon!',
     link: 'https://admu-vac.onrender.com',
     linkLabel: 'Visit site',
   },
@@ -122,8 +122,8 @@ export const achievements: Achievement[] = [
     label: 'A bit of an amateur musician; guitarist and drummer',
     kind: 'major',
     interaction: 'previewRail',
-    tooltipText:
-      'Playing music as a hobby. Mostly rock and indie covers.',
+    detailCopy:
+      'Belief - John Mayer',
     videoUrl: '/assets/music/guitar-playing.mov',
     videoThumbnail: '/assets/music/guitar-thumbnail.png',
     spotifyUrl: 'https://open.spotify.com/track/4vaNwLCX5wiN5aFDZuTnXi?si=a416d58d97a24404',
@@ -142,14 +142,9 @@ export const achievements: Achievement[] = [
     label: 'Coffee connoisseur',
     kind: 'major',
     interaction: 'dialog',
-    previewImage: '/assets/coffee/coffee-1.jpg', // Fallback for single image view
-    previewImages: [
-      '/assets/coffee/coffee-1.jpg',
-      '/assets/coffee/coffee-2.jpg',
-      '/assets/coffee/coffee-3.jpg',
-    ], // Multiple images for Folder
+    previewImage: '/assets/coffee.jfif',
     detailCopy:
-      'Always on the hunt for the perfect cup. Prefers pour-over and espresso.',
+      'Always on the hunt for the perfect cup. Fan of bright and fruity notes. Espresso boy.',
   },
   {
     id: 'deans-lister',
@@ -174,9 +169,9 @@ export const narrativeContent = {
 
   unilab: `At Unilab, I analyzed e-commerce data for flagship consumer health brands and prototyped a rural health-tech app. A doctor on the review panel called it "his dream." I plan to return to this after graduation—starting with Unilab.`,
 
-  tools: `Outside work, I build small, practical tools to remove everyday friction: AlagaNetwork (rural health-tech), a college venue availability checker (releasing soon — this class hears it first).`,
+  tools: `Outside work, I build small, practical tools to remove everyday friction: AlagaNetwork (rural health-tech), a venue availability checker, and a TNVS price comparison platform.`,
 
-  howIOperate: `How I operate: Radical candor. Slow productivity. Ship early → learn → refine.`,
+  howIOperate: `How I operate: Radical candor. Slow productivity. Ship early → fail fast → learn → refine.`,
 
   trajectory: `Trajectory: 10 yrs → Product architect solving last-mile data & access problems. 15 yrs → Founder/CTO of a rural tech startup. 20+ yrs → Angel & policy advisor.`,
 }
