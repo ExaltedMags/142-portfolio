@@ -46,14 +46,14 @@ export function ImageLightbox({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="max-w-7xl w-full h-[90vh] p-0 bg-paper-dark"
+        className="max-w-7xl w-[calc(100%-1rem)] sm:w-full h-[85vh] sm:h-[90vh] p-0 bg-paper-dark"
         onKeyDown={handleKeyDown}
       >
         <div className="relative w-full h-full flex items-center justify-center">
           {/* Close button */}
           <button
             onClick={() => onOpenChange(false)}
-            className="absolute top-4 right-4 z-50 rounded-full bg-paper p-2 shadow-lg hover:bg-paper-dark transition-colors"
+            className="absolute top-2 right-2 sm:top-4 sm:right-4 z-50 rounded-full bg-paper p-2 shadow-lg hover:bg-paper-dark transition-colors"
             aria-label="Close"
           >
             <X className="h-5 w-5" />
@@ -63,11 +63,11 @@ export function ImageLightbox({
           {images.length > 1 && (
             <button
               onClick={handlePrevious}
-              className="absolute left-4 z-50 rounded-full bg-paper p-3 shadow-lg hover:bg-paper-dark transition-colors"
+              className="absolute left-2 sm:left-4 z-50 rounded-full bg-paper p-2 sm:p-3 shadow-lg hover:bg-paper-dark transition-colors"
               aria-label="Previous image"
             >
               <svg
-                className="w-6 h-6"
+                className="w-5 h-5 sm:w-6 sm:h-6"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -83,7 +83,7 @@ export function ImageLightbox({
           )}
 
           {/* Image */}
-          <div className="w-full h-full flex items-center justify-center p-8">
+          <div className="w-full h-full flex items-center justify-center p-4 sm:p-8">
             <img
               src={images[currentIndex]}
               alt={`${alt} - Image ${currentIndex + 1}`}
@@ -95,11 +95,11 @@ export function ImageLightbox({
           {images.length > 1 && (
             <button
               onClick={handleNext}
-              className="absolute right-4 z-50 rounded-full bg-paper p-3 shadow-lg hover:bg-paper-dark transition-colors"
+              className="absolute right-2 sm:right-4 z-50 rounded-full bg-paper p-2 sm:p-3 shadow-lg hover:bg-paper-dark transition-colors"
               aria-label="Next image"
             >
               <svg
-                className="w-6 h-6"
+                className="w-5 h-5 sm:w-6 sm:h-6"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -116,7 +116,7 @@ export function ImageLightbox({
 
           {/* Image counter */}
           {images.length > 1 && (
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-50 bg-paper px-4 py-2 rounded-full shadow-lg text-sm text-ink-muted">
+            <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 z-50 bg-paper px-3 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-lg text-xs sm:text-sm text-ink-muted">
               {currentIndex + 1} / {images.length}
             </div>
           )}

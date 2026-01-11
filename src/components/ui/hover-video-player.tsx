@@ -13,6 +13,23 @@ interface HoverVideoPlayerProps {
   preload?: 'auto' | 'metadata' | 'none'
 }
 
+// Check if device supports hover (not a touch-only device)
+function useIsTouchDevice() {
+  const [isTouch, setIsTouch] = useState(false)
+
+  useEffect(() => {
+    // Check for touch capability
+    const checkTouch = () => {
+      setIsTouch(window.matchMedia('(hover: none)').matches)
+    }
+    checkTouch()
+    window.matchMedia('(hover: none)').addEventListener('change', checkTouch)
+    return () => window.matchMedia('(hover: none)').removeEventListener('change', checkTouch)
+  }, [])
+
+  return isTouch
+}
+
 export function HoverVideoPlayer({
   videoSrc,
   thumbnailSrc,
@@ -25,6 +42,8 @@ export function HoverVideoPlayer({
   const containerRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const progressBarRef = useRef<HTMLDivElement>(null)
+  const controlsTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const isTouchDevice = useIsTouchDevice()
   const [isHovering, setIsHovering] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -35,15 +54,56 @@ export function HoverVideoPlayer({
   const [isMuted, setIsMuted] = useState(muted)
   const [showControls, setShowControls] = useState(false)
 
+  // Auto-hide controls after inactivity on touch devices
+  const resetControlsTimeout = useCallback(() => {
+    if (controlsTimeoutRef.current) {
+      clearTimeout(controlsTimeoutRef.current)
+    }
+    if (isTouchDevice && showControls) {
+      controlsTimeoutRef.current = setTimeout(() => {
+        if (!isPlaying) return // Keep controls visible when paused
+        setShowControls(false)
+      }, 3000)
+    }
+  }, [isTouchDevice, showControls, isPlaying])
+
   const handleMouseEnter = useCallback(() => {
+    if (isTouchDevice) return // Ignore mouse events on touch devices
     setIsHovering(true)
     setShowControls(true)
-  }, [])
+  }, [isTouchDevice])
 
   const handleMouseLeave = useCallback(() => {
+    if (isTouchDevice) return // Ignore mouse events on touch devices
     setIsHovering(false)
     setShowControls(false)
-  }, [])
+  }, [isTouchDevice])
+
+  // Handle tap/click on video container for touch devices
+  const handleContainerClick = useCallback((e: React.MouseEvent | React.TouchEvent) => {
+    // Don't handle if clicking on controls
+    const target = e.target as HTMLElement
+    if (target.closest('.video-controls')) return
+
+    if (isTouchDevice) {
+      // On touch: toggle controls visibility, and play/pause
+      if (!showControls) {
+        setShowControls(true)
+        resetControlsTimeout()
+      } else {
+        // If controls are visible and we tap, toggle play/pause
+        if (isPlaying) {
+          videoRef.current?.pause()
+          setIsPlaying(false)
+        } else {
+          videoRef.current?.play()
+          setIsPlaying(true)
+          setShowThumbnail(false)
+        }
+        resetControlsTimeout()
+      }
+    }
+  }, [isTouchDevice, showControls, isPlaying, resetControlsTimeout])
 
   const playVideo = useCallback(() => {
     if (!videoRef.current) return
@@ -132,14 +192,24 @@ export function HoverVideoPlayer({
     return `${mins}:${secs.toString().padStart(2, '0')}`
   }, [])
 
-  // Handle hover state changes
+  // Handle hover state changes (desktop only)
   useEffect(() => {
+    if (isTouchDevice) return // Skip for touch devices
     if (isHovering && !isPlaying) {
       playVideo()
     } else if (!isHovering && isPlaying) {
       pauseVideo()
     }
-  }, [isHovering, isPlaying, playVideo, pauseVideo])
+  }, [isHovering, isPlaying, playVideo, pauseVideo, isTouchDevice])
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (controlsTimeoutRef.current) {
+        clearTimeout(controlsTimeoutRef.current)
+      }
+    }
+  }, [])
 
   // Video event handlers
   useEffect(() => {
@@ -218,10 +288,11 @@ export function HoverVideoPlayer({
   return (
     <motion.div
       ref={containerRef}
-      className={cn('relative overflow-hidden rounded-md', className)}
+      className={cn('relative overflow-hidden rounded-md cursor-pointer', className)}
       style={style}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onClick={handleContainerClick}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
@@ -246,6 +317,14 @@ export function HoverVideoPlayer({
             className="w-full h-full object-cover"
             loading="lazy"
           />
+          {/* Play indicator for touch devices */}
+          {isTouchDevice && !isPlaying && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-14 h-14 rounded-full bg-black/50 flex items-center justify-center">
+                <Play className="w-6 h-6 text-white ml-1" />
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -275,7 +354,7 @@ export function HoverVideoPlayer({
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
             
             {/* Controls */}
-            <div className="relative z-10 p-2 sm:p-3 pointer-events-auto">
+            <div className="video-controls relative z-10 p-2 sm:p-3 pointer-events-auto">
               {/* Progress bar */}
               <div
                 ref={progressBarRef}

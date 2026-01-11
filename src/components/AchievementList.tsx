@@ -1,4 +1,4 @@
-import { useState, lazy, Suspense } from 'react'
+import { useState, lazy, Suspense, useEffect } from 'react'
 import { achievements, Achievement } from '@/content/achievements'
 import { AchievementItem } from './AchievementItem'
 import { PreviewRail } from './PreviewRail'
@@ -10,11 +10,28 @@ const ArtifactDialog = lazy(() =>
   import('./ArtifactDialog').then((m) => ({ default: m.ArtifactDialog }))
 )
 
+// Hook to detect touch-only devices (no hover capability)
+function useIsTouchDevice() {
+  const [isTouch, setIsTouch] = useState(false)
+
+  useEffect(() => {
+    const checkTouch = () => setIsTouch(window.matchMedia('(hover: none)').matches)
+    checkTouch()
+    const mediaQuery = window.matchMedia('(hover: none)')
+    mediaQuery.addEventListener('change', checkTouch)
+    return () => mediaQuery.removeEventListener('change', checkTouch)
+  }, [])
+
+  return isTouch
+}
+
 interface AchievementListProps {
   achievementsToShow?: Achievement[]
 }
 
 export function AchievementList({ achievementsToShow = achievements }: AchievementListProps) {
+  const isTouchDevice = useIsTouchDevice()
+  
   // Initialize with the first achievement to have it hovered by default
   const [activeItem, setActiveItem] = useState<Achievement | null>(
     achievementsToShow.length > 0 && 
@@ -37,9 +54,21 @@ export function AchievementList({ achievementsToShow = achievements }: Achieveme
   }
 
   const handleClick = (item: Achievement) => {
+    const isAlreadyActive = activeItem?.id === item.id
+
+    // Update the active item for preview rail
+    if (item.interaction === 'previewRail' || item.interaction === 'dialog') {
+      setActiveItem(item)
+    }
+
+    // Open dialog for dialog-type items:
+    // - On desktop (hover devices): always open dialog on click
+    // - On mobile (touch devices): only open if item is already active (second tap)
     if (item.interaction === 'dialog') {
-      setDialogItem(item)
-      setDialogOpen(true)
+      if (!isTouchDevice || isAlreadyActive) {
+        setDialogItem(item)
+        setDialogOpen(true)
+      }
     }
   }
 
@@ -50,6 +79,11 @@ export function AchievementList({ achievementsToShow = achievements }: Achieveme
           <h2 id="achievements-heading" className="sr-only">
             Achievements & Experience
           </h2>
+
+          {/* Mobile: Preview rail above the list */}
+          <div className="md:hidden mb-6">
+            <PreviewRail activeItem={activeItem} />
+          </div>
 
           {/* Responsive layout: stacked on mobile, two-column on desktop */}
           <div className={cn(

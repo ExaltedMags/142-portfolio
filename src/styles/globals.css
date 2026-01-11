@@ -64,6 +64,18 @@
   body {
     position: relative;
     min-height: 100vh;
+    /* Prevent horizontal overflow from transforms/animations */
+    overflow-x: clip;
+  }
+
+  /* Responsive media defaults */
+  img, video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  iframe {
+    max-width: 100%;
   }
 
   /* Subtle grain overlay */
@@ -196,13 +208,21 @@
 
   /* Preview rail */
   .preview-rail {
-    position: sticky;
-    top: 2rem;
-    min-height: 24rem;
+    position: relative;
+    min-height: 16rem;
     background-color: var(--color-paper-warm);
     border-radius: var(--radius-lg);
     overflow: visible;
     transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  /* Sticky only on desktop */
+  @media (min-width: 768px) {
+    .preview-rail {
+      position: sticky;
+      top: 2rem;
+      min-height: 24rem;
+    }
   }
 
   .preview-rail--empty {
