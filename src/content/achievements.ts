@@ -169,7 +169,7 @@ export const narrativeContent = {
 
   unilab: `At Unilab, I analyzed e-commerce data for flagship consumer health brands and prototyped a rural health-tech app. A doctor on the review panel called it "his dream." I plan to return to this after graduation—starting with Unilab.`,
 
-  tools: `Outside work, I build small, practical tools to remove everyday friction: AlagaNetwork (rural health-tech), a venue availability checker, and a TNVS price comparison platform.`,
+  tools: `Outside work, I build small, practical tools to remove everyday friction: AlagaNetwork (yes, that same health-tech app), a venue availability checker, and a TNVS price comparison platform.`,
 
   howIOperate: `How I operate: Radical candor. Slow productivity. Ship early → fail fast → learn → refine.`,
 

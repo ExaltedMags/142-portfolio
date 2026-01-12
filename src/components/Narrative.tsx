@@ -53,7 +53,7 @@ export function Narrative() {
             >
               AlagaNetwork
             </LinkPreview>
-            {' '}(rural health-tech), a{' '}
+            {' '}(yes, that same health-tech app), a{' '}
             <LinkPreview 
               url="https://admu-vac.onrender.com" 
               className="inline-block text-accent cursor-pointer underline decoration-accent/30 underline-offset-2 hover:decoration-accent/60 transition-colors"

@@ -202,42 +202,7 @@ export function PreviewRail({ activeItem }: PreviewRailProps) {
           {/* Content */}
           <div className="flex-1">
             <h3 className="font-display text-lg font-medium text-ink leading-tight mb-2">
-              {activeItem.id === 'somnium' && activeItem.link ? (
-                // Special handling for SOMNIUM - make only "SOMNIUM" clickable
-                (() => {
-                  const label = activeItem.label
-                  const somniumIndex = label.indexOf('(SOMNIUM)')
-                  if (somniumIndex !== -1) {
-                    const beforeSomnium = label.substring(0, somniumIndex + 1)
-                    const somniumText = 'SOMNIUM'
-                    const afterSomnium = label.substring(somniumIndex + 1 + somniumText.length + 1)
-                    return (
-                      <>
-                        {beforeSomnium}
-                        <LinkPreview
-                          url={activeItem.link}
-                          className="inline-block text-accent cursor-pointer underline decoration-accent/30 underline-offset-2 hover:decoration-accent/60 transition-colors font-medium"
-                        >
-                          {somniumText}
-                        </LinkPreview>
-                        {afterSomnium}
-                      </>
-                    )
-                  }
-                  return label
-                })()
-              ) : activeItem.link ? (
-                <LinkPreview
-                  url={activeItem.link}
-                  className="block"
-                >
-                  <span className="hover:text-accent transition-colors cursor-pointer">
-                    {activeItem.label}
-                  </span>
-                </LinkPreview>
-              ) : (
-                activeItem.label
-              )}
+              {activeItem.label}
             </h3>
 
             {activeItem.detailCopy && (
