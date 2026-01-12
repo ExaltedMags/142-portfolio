@@ -7,6 +7,7 @@ interface FolderProps {
   size?: number
   items?: React.ReactNode[]
   className?: string
+  onOpenChange?: (open: boolean) => void
 }
 
 const darkenColor = (hex: string, percent: number): string => {
@@ -27,7 +28,7 @@ const darkenColor = (hex: string, percent: number): string => {
   return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()
 }
 
-export const Folder = ({ color = '#5227FF', size = 1, items = [], className = '' }: FolderProps) => {
+export const Folder = ({ color = '#5227FF', size = 1, items = [], className = '', onOpenChange }: FolderProps) => {
   const maxItems = 3
   const papers = items.slice(0, maxItems)
   while (papers.length < maxItems) {
@@ -50,7 +51,9 @@ export const Folder = ({ color = '#5227FF', size = 1, items = [], className = ''
     if (target.tagName === 'IMG' || target.closest('.paper > div')) {
       return
     }
-    setOpen((prev) => !prev)
+    const newOpen = !open
+    setOpen(newOpen)
+    onOpenChange?.(newOpen)
     if (open) {
       setPaperOffsets(Array.from({ length: maxItems }, () => ({ x: 0, y: 0 })))
     }

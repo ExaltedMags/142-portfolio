@@ -9,6 +9,11 @@
 .folder {
   transition: all 0.2s ease-in;
   cursor: pointer;
+  overflow: visible;
+}
+
+.folder.open {
+  overflow: visible;
 }
 
 .folder:not(.folder--click):hover {
@@ -85,12 +90,25 @@
   transform: skew(-15deg) scaleY(0.6);
 }
 
+.folder.open .folder__front {
+  z-index: 0 !important;
+}
+
+.folder.open .folder__front.right {
+  z-index: 0 !important;
+}
+
 .folder__back {
   position: relative;
   width: 100px;
   height: 80px;
   background: var(--folder-back-color);
   border-radius: 0px 10px 10px 10px;
+  overflow: visible;
+}
+
+.folder.open .folder__back {
+  overflow: visible;
 }
 
 .folder__back::after {
@@ -132,7 +150,7 @@
 }
 
 .folder.open .paper {
-  z-index: 50;
+  z-index: 100 !important;
 }
 
 .paper:nth-child(2) {

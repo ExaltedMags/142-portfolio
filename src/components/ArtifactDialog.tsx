@@ -47,14 +47,24 @@ export function ArtifactDialog({ item, open, onOpenChange }: ArtifactDialogProps
         <DialogContent className="max-w-xl">
           {/* Image display: Folder for multiple images, single image otherwise */}
           {(item.previewImage || item.previewImages) && (
-            <>
-              {/* Click me! indicator - positioned above the preview container */}
+            <div className={cn(
+              "relative mb-6",
+              item.previewImages && item.previewImages.length > 1 
+                ? "" 
+                : "-mt-2",
+              item.id === 'coffee' 
+                ? "aspect-[3/4]" 
+                : (item.id === 'venue-checker' || item.id === 'alaga-network')
+                  ? "aspect-square"
+                  : "aspect-video"
+            )}>
+              {/* Click me! indicator - absolute positioned above container */}
               {item.previewImages && item.previewImages.length > 1 && (
-                <div className="flex flex-col items-center gap-0 mb-1 -mt-2 pointer-events-none select-none">
-                  <span className="font-display text-sm text-accent italic whitespace-nowrap">Click me!</span>
+                <div className="absolute left-1/2 -translate-x-1/2 -top-[5rem] z-20 flex flex-col items-center pointer-events-none select-none">
+                  <span className="font-display text-sm text-accent italic whitespace-nowrap mb-[-4px]">Click me!</span>
                   <SquigglyArrow 
-                    width={60} 
-                    height={40} 
+                    width={50} 
+                    height={45} 
                     strokeWidth={2} 
                     direction="down" 
                     variant="smooth"
@@ -62,78 +72,70 @@ export function ArtifactDialog({ item, open, onOpenChange }: ArtifactDialogProps
                   />
                 </div>
               )}
-              <div className={cn(
-                "relative bg-paper-dark rounded-md mb-6 flex items-center justify-center",
-                item.previewImages && item.previewImages.length > 1 
-                  ? "overflow-visible -mt-2" 
-                  : "overflow-hidden -mt-2",
-                item.id === 'coffee' 
-                  ? "aspect-[3/4]" 
-                  : "aspect-video"
-              )}>
+              <div className="relative w-full h-full bg-paper-dark rounded-md flex items-center justify-center overflow-hidden">
                 {item.previewImages && item.previewImages.length > 1 ? (
-                  <div className="relative z-10">
-                    <Folder
-                      color="#c45d3a"
-                      size={2}
-                      items={item.previewImages.map((img, idx) => (
-                        <div
-                          key={idx}
-                          onClick={() => handleImageClick(idx)}
-                          className="w-full h-full cursor-pointer"
-                        >
-                          <img
-                            src={img}
-                            alt={`${item.label} - Image ${idx + 1}`}
-                            loading="lazy"
-                            decoding="async"
-                            className="w-full h-full object-cover"
-                            onError={(e) => {
-                              e.currentTarget.style.display = 'none'
-                            }}
-                          />
-                        </div>
-                      ))}
-                      className="mx-auto"
-                    />
-                  </div>
+                  <Folder
+                    color="#c45d3a"
+                    size={2}
+                    items={item.previewImages.map((img, idx) => (
+                      <div
+                        key={idx}
+                        onClick={() => handleImageClick(idx)}
+                        className="w-full h-full cursor-pointer"
+                      >
+                        <img
+                          src={img}
+                          alt={`${item.label} - Image ${idx + 1}`}
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none'
+                          }}
+                        />
+                      </div>
+                    ))}
+                    className="mx-auto"
+                  />
                 ) : item.previewImage ? (
-                <img
-                  src={item.previewImage}
-                  alt={item.label}
-                  loading="lazy"
-                  decoding="async"
-                  className={cn(
-                    "w-full h-full cursor-pointer",
-                    item.id === 'coffee' ? "object-contain" : "object-cover"
-                  )}
-                  onClick={handleSingleImageClick}
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none'
-                  }}
-                />
-              ) : null}
-              {/* Placeholder */}
-              {!item.previewImage && !item.previewImages && (
-                <div className="absolute inset-0 flex items-center justify-center text-ink-faint pointer-events-none">
-                  <svg
-                    className="w-16 h-16 opacity-20"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1.5}
-                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                    />
-                  </svg>
-                </div>
-              )}
+                  <img
+                    src={item.previewImage}
+                    alt={item.label}
+                    loading="lazy"
+                    decoding="async"
+                    className={cn(
+                      "w-full h-full cursor-pointer",
+                      (item.id === 'coffee' || item.id === 'venue-checker' || item.id === 'alaga-network')
+                        ? "object-contain" 
+                        : "object-cover"
+                    )}
+                    onClick={handleSingleImageClick}
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none'
+                    }}
+                  />
+                ) : null}
+                {/* Placeholder */}
+                {!item.previewImage && !item.previewImages && (
+                  <div className="absolute inset-0 flex items-center justify-center text-ink-faint pointer-events-none">
+                    <svg
+                      className="w-16 h-16 opacity-20"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      />
+                    </svg>
+                  </div>
+                )}
+              </div>
             </div>
-          </>
-        )}
+          )}
 
         <DialogHeader>
           <DialogTitle>{item.label}</DialogTitle>

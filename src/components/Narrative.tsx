@@ -47,11 +47,12 @@ export function Narrative() {
           {/* Tools */}
           <p className="text-ink-muted leading-relaxed fade-in-up delay-2">
             Outside work, I build small, practical tools to remove everyday friction:{' '}
-            <Tooltip content="A platform connecting barangay health workers in Geographically Isolated and Disadvantaged Areas (GIDAs) with real-time data.">
-              <span className="text-accent cursor-help underline decoration-accent/30 underline-offset-2 hover:decoration-accent/60 transition-colors">
-                AlagaNetwork
-              </span>
-            </Tooltip>
+            <LinkPreview 
+              url="https://alaga-network.vercel.app/" 
+              className="inline-block text-accent cursor-pointer underline decoration-accent/30 underline-offset-2 hover:decoration-accent/60 transition-colors"
+            >
+              AlagaNetwork
+            </LinkPreview>
             {' '}(rural health-tech), a{' '}
             <LinkPreview 
               url="https://admu-vac.onrender.com" 
@@ -86,11 +87,14 @@ export function Narrative() {
               <li>
                 <Tooltip 
                   content={
-                    <img 
-                      src="/assets/radical-candor-fully-revised-updated-edition.jpg" 
-                      alt="Radical Candor book cover"
-                      className="max-w-[200px] rounded-sm"
-                    />
+                    <div className="w-full">
+                      <img 
+                        src="/assets/radical-candor-fully-revised-updated-edition.jpg" 
+                        alt="Radical Candor book cover"
+                        className="w-32 rounded-sm mb-2 mx-auto"
+                      />
+                      <p className="text-sm">I aim to be direct and honest in feedback, while staying respectful and invested in the people I work with.</p>
+                    </div>
                   }
                 >
                   <span className="text-accent cursor-help underline decoration-accent/30 underline-offset-2 hover:decoration-accent/60 transition-colors">
@@ -101,11 +105,14 @@ export function Narrative() {
               <li>
                 <Tooltip 
                   content={
-                    <img 
-                      src="/assets/slowprod.jpg" 
-                      alt="Slow Productivity book cover"
-                      className="max-w-[200px] rounded-sm"
-                    />
+                    <div className="w-full">
+                      <img 
+                        src="/assets/slowprod.jpg" 
+                        alt="Slow Productivity book cover"
+                        className="w-32 rounded-sm mb-2 mx-auto"
+                      />
+                      <p className="text-sm">Focusing on fewer things at a time and doing them well, rather than optimizing for constant busyness.</p>
+                    </div>
                   }
                 >
                   <span className="text-accent cursor-help underline decoration-accent/30 underline-offset-2 hover:decoration-accent/60 transition-colors">
@@ -146,9 +153,9 @@ const timelineData = [
     title: '10 yrs',
     content: (
       <div className="text-base md:text-lg text-ink-muted leading-relaxed">
-        <p className="font-mono mb-4 text-lg md:text-xl text-ink font-semibold">Product architect</p>
+        <p className="font-mono mb-4 text-lg md:text-xl text-ink font-semibold">Hybrid role</p>
         <p className="text-sm md:text-base text-ink-faint leading-relaxed">
-          Solving last-mile data & access problems.
+          Fulfill the "MIS prophecy" and work at the intersection of strategy and tech; owning product systems while helping teams address data, access, and adoption challenges, especially in the margins.
         </p>
       </div>
     ),
@@ -157,20 +164,20 @@ const timelineData = [
     title: '15 yrs',
     content: (
       <div className="text-base md:text-lg text-ink-muted leading-relaxed">
-        <p className="font-mono mb-4 text-lg md:text-xl text-ink font-semibold">Founder/CTO</p>
+        <p className="font-mono mb-4 text-lg md:text-xl text-ink font-semibold">Builder phase</p>
         <p className="text-sm md:text-base text-ink-faint leading-relaxed">
-          Leading a rural tech startup focused on bridging digital divides and improving access to essential services.
+          Building and leading (or at least working for) a digital-divide tech company aimed at bridging gaps across healthcare, connectivity, and essential digital services.
         </p>
       </div>
     ),
   },
   {
-    title: '20+ yrs',
+    title: '20 yrs',
     content: (
       <div className="text-base md:text-lg text-ink-muted leading-relaxed">
-        <p className="font-mono mb-4 text-lg md:text-xl text-ink font-semibold">Angel & policy advisor</p>
+        <p className="font-mono mb-4 text-lg md:text-xl text-ink font-semibold">Leverage phase</p>
         <p className="text-sm md:text-base text-ink-faint leading-relaxed">
-          Investing and advising on technology policy, especially around rural connectivity and health data infrastructure.
+          Remain active in the field: working on my craft, advising founders, investing in early-stage efforts, and contributing to technology policy around digital inclusion, connectivity, and infrastructure.
         </p>
       </div>
     ),

@@ -83,11 +83,11 @@ export const achievements: Achievement[] = [
     label: 'AlagaNetwork',
     kind: 'major',
     interaction: 'dialog',
-    previewImage: '/assets/alaga-network.svg',
+    previewImage: '/assets/alaga-qr.png',
     detailCopy:
       'A rural health-tech platform connecting barangay health workers in Geographically Isolated and Disadvantaged Areas (GIDAs) with real-time data.',
-    link: undefined,
-    linkLabel: 'Learn more',
+    link: 'https://alaga-network.vercel.app/',
+    linkLabel: 'Visit site',
   },
   {
     id: 'venue-checker',

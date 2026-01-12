@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Achievement } from '@/content/achievements'
 import { cn } from '@/lib/utils'
 import { ExternalLink } from 'lucide-react'
@@ -43,6 +43,12 @@ function SpotifyEmbed({ url }: { url: string }) {
 export function PreviewRail({ activeItem }: PreviewRailProps) {
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)
+  const [folderOpen, setFolderOpen] = useState(false)
+
+  // Reset folder state when active item changes
+  useEffect(() => {
+    setFolderOpen(false)
+  }, [activeItem?.id])
 
   const handleImageClick = (index: number) => {
     if (activeItem?.previewImages) {
@@ -74,28 +80,49 @@ export function PreviewRail({ activeItem }: PreviewRailProps) {
           <div className="h-full flex flex-col" key={activeItem.id}>
             {/* Video, Spotify embed, or Image display: Folder for multiple images, single image otherwise */}
             {activeItem.videoUrl ? (
-              <div className="relative w-full aspect-[16/10] bg-paper-dark rounded-md mb-4 overflow-hidden">
-                <HoverVideoPlayer
-                  videoSrc={activeItem.videoUrl}
-                  thumbnailSrc={activeItem.videoThumbnail}
-                  muted={false}
-                  loop={true}
-                  className="w-full h-full"
-                />
+              <div className="relative w-full aspect-[16/10] bg-paper-dark rounded-md mb-4 overflow-visible">
+                {/* Hover me! indicator - absolute positioned above container */}
+                {activeItem.id === 'musician' && (
+                  <div className="absolute left-1/2 -translate-x-1/2 -top-[5rem] z-20 flex flex-col items-center pointer-events-none select-none">
+                    <span className="font-display text-sm text-accent italic whitespace-nowrap mb-[-4px]">Hover me!</span>
+                    <SquigglyArrow 
+                      width={50} 
+                      height={45} 
+                      strokeWidth={2} 
+                      direction="down" 
+                      variant="smooth"
+                      className="text-accent"
+                    />
+                  </div>
+                )}
+                <div className="relative w-full h-full overflow-hidden rounded-md">
+                  <HoverVideoPlayer
+                    videoSrc={activeItem.videoUrl}
+                    thumbnailSrc={activeItem.videoThumbnail}
+                    muted={false}
+                    loop={true}
+                    className="w-full h-full"
+                  />
+                </div>
               </div>
             ) : activeItem.spotifyUrl ? (
               <div className="relative w-full bg-paper-dark rounded-md mb-4 overflow-hidden">
                 <SpotifyEmbed url={activeItem.spotifyUrl} />
               </div>
             ) : (
-              <>
-                {/* Click me! indicator - positioned above the preview container */}
+              <div className={cn(
+                "relative mb-4",
+                (activeItem.id === 'venue-checker' || activeItem.id === 'alaga-network')
+                  ? "aspect-square" 
+                  : "aspect-[4/3]"
+              )}>
+                {/* Click me! indicator - absolute positioned above container */}
                 {activeItem.previewImages && activeItem.previewImages.length > 1 && (
-                  <div className="flex flex-col items-center gap-0 mb-1 pointer-events-none select-none">
-                    <span className="font-display text-sm text-accent italic whitespace-nowrap">Click me!</span>
+                  <div className="absolute left-1/2 -translate-x-1/2 -top-[5rem] z-20 flex flex-col items-center pointer-events-none select-none">
+                    <span className="font-display text-sm text-accent italic whitespace-nowrap mb-[-4px]">Click me!</span>
                     <SquigglyArrow 
-                      width={60} 
-                      height={40} 
+                      width={50} 
+                      height={45} 
                       strokeWidth={2} 
                       direction="down" 
                       variant="smooth"
@@ -104,40 +131,34 @@ export function PreviewRail({ activeItem }: PreviewRailProps) {
                   </div>
                 )}
                 <div className={cn(
-                  "relative bg-paper-dark rounded-md mb-4 flex items-center justify-center",
-                  activeItem.id === 'venue-checker' 
-                    ? "aspect-square" 
-                    : "aspect-[4/3]",
-                  activeItem.previewImages && activeItem.previewImages.length > 1 
-                    ? "overflow-visible" 
-                    : "overflow-hidden"
+                  "relative w-full h-full bg-paper-dark rounded-md flex items-center justify-center",
+                  folderOpen ? "overflow-visible" : "overflow-hidden"
                 )}>
                   {activeItem.previewImages && activeItem.previewImages.length > 1 ? (
-                    <div className="relative z-10">
-                      <Folder
-                        color="#c45d3a"
-                        size={1.5}
-                        items={activeItem.previewImages.map((img, idx) => (
-                          <div
-                            key={idx}
-                            onClick={() => handleImageClick(idx)}
-                            className="w-full h-full cursor-pointer"
-                          >
-                            <img
-                              src={img}
-                              alt={`${activeItem.label} - Image ${idx + 1}`}
-                              loading="lazy"
-                              decoding="async"
-                              className="w-full h-full object-cover"
-                              onError={(e) => {
-                                e.currentTarget.style.display = 'none'
-                              }}
-                            />
-                          </div>
-                        ))}
-                        className="mx-auto"
-                      />
-                    </div>
+                    <Folder
+                      color="#c45d3a"
+                      size={1.5}
+                      items={activeItem.previewImages.map((img, idx) => (
+                        <div
+                          key={idx}
+                          onClick={() => handleImageClick(idx)}
+                          className="w-full h-full cursor-pointer"
+                        >
+                          <img
+                            src={img}
+                            alt={`${activeItem.label} - Image ${idx + 1}`}
+                            loading="lazy"
+                            decoding="async"
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              e.currentTarget.style.display = 'none'
+                            }}
+                          />
+                        </div>
+                      ))}
+                      className="mx-auto"
+                      onOpenChange={setFolderOpen}
+                    />
                   ) : activeItem.previewImage ? (
                   <img
                     src={activeItem.previewImage}
@@ -146,7 +167,7 @@ export function PreviewRail({ activeItem }: PreviewRailProps) {
                     decoding="async"
                     className={cn(
                       "w-full h-full cursor-pointer",
-                      activeItem.id === 'venue-checker' 
+                      (activeItem.id === 'venue-checker' || activeItem.id === 'alaga-network')
                         ? "object-contain" 
                         : "object-cover"
                     )}
@@ -175,7 +196,7 @@ export function PreviewRail({ activeItem }: PreviewRailProps) {
                     </div>
                   )}
                 </div>
-              </>
+              </div>
             )}
 
           {/* Content */}
