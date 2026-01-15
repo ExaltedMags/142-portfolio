@@ -55,7 +55,7 @@ export function Narrative() {
             </LinkPreview>
             {' '}(yes, that same health-tech app), a{' '}
             <LinkPreview 
-              url="https://admu-vac.onrender.com" 
+              url="https://admu-vac.vercel.app/" 
               className="inline-block text-accent cursor-pointer underline decoration-accent/30 underline-offset-2 hover:decoration-accent/60 transition-colors"
             >
               venue availability checker

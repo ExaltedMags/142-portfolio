@@ -97,7 +97,7 @@ export const achievements: Achievement[] = [
     previewImage: '/assets/venue-qr.png',
     detailCopy:
       'A lightweight tool that scrapes and displays real-time availability of campus venues. Coming soon!',
-    link: 'https://admu-vac.onrender.com',
+    link: 'https://admu-vac.vercel.app/',
     linkLabel: 'Visit site',
   },
   {
